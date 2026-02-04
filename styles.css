@@ -734,49 +734,59 @@ button {
 .home-header {
     text-align: center;
     margin-bottom: 50px;
-    max-width: 800px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(114, 47, 55, 0.03) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .home-title {
-    font-size: 42px;
-    font-weight: 700;
+    font-size: 56px;
+    font-weight: 800;
     color: var(--garnet);
-    margin-bottom: 12px;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    line-height: 1.2;
 }
 
 .home-subtitle {
-    font-size: 18px;
-    color: var(--grey);
-    margin-bottom: 20px;
-    line-height: 1.6;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--dark-grey);
+    margin-bottom: 25px;
+    line-height: 1.5;
 }
 
 .home-description {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--dark-grey);
-    line-height: 1.8;
-    margin-bottom: 30px;
+    line-height: 1.9;
+    margin-bottom: 35px;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .feature-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 25px;
     margin-bottom: 40px;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--dark-grey);
 }
 
 .feature-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
 }
 
 .feature-icon {
-    font-size: 20px;
+    font-size: 28px;
     margin-top: 2px;
     flex-shrink: 0;
 }
