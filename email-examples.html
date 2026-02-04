@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFBA - Email Examples</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">SAFBA</div>
+        <div class="header-info">
+            <span>Staff Email Management System</span>
+            <div class="user-badge">👤 Staff Member</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="nav-item"><a href="index.html" style="color: inherit; text-decoration: none; display: block;">🏠 Home</a></div>
+            <div class="nav-item"><a href="staff-portal.html" style="color: inherit; text-decoration: none; display: block;">📊 Staff Portal</a></div>
+            <div class="nav-item active">📧 Examples</div>
+            <div style="border-top: 1px solid var(--light-grey); margin: 10px 0;"></div>
+            <div class="nav-item"><a href="analytics.html" style="color: inherit; text-decoration: none; display: block;">📈 Analytics</a></div>
+            <div class="nav-item" style="opacity: 0.6;">🔄 Flow Demo</div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="view-section active" style="display: flex !important; flex-direction: column;">
+                <div class="dashboard-header">
+                    <h1>Email Response Examples</h1>
+                    <p>Sample communications showing AI-assisted and human-reviewed responses with satisfaction feedback</p>
+                </div>
+
+                <div class="email-container">
+                    <!-- Email 1: AI-Assisted Response (Completed) -->
+                    <div class="email-card">
+                        <div class="email-header">
+                            <div class="email-title">Your Request Has Been Answered</div>
+                            <div class="email-id">Request ID: REQ-2025-001 | Status: ✓ Resolved</div>
+                        </div>
+                        <div class="email-body">
+                            <div class="status-indicator">
+                                ✓ Your request has been reviewed and a response is below.
+                            </div>
+
+                            <h3 style="margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--dark-grey);">STUDENT'S ORIGINAL INQUIRY</h3>
+                            <div class="message-content">
+                                Subject: Course Registration Help - Fall 2025<br><br>
+                                Hi,<br><br>
+                                I'm having trouble registering for my core courses for Fall 2025. I was able to register for three courses but when I try to add my fourth course (ENGR 301), the system says I don't have the prerequisites. However, I completed ENGR 201 last semester and got an A. Can you help me resolve this?<br><br>
+                                Thanks,<br>
+                                Alex Johnson<br>
+                                Student ID: 001234567
+                            </div>
+
+                            <div class="response-section">
+                                <div class="response-label">RESPONSE FROM ENGINEERING FACULTY</div>
+                                <div class="response-text">
+                                    Dear Alex,<br><br>
+                                    Thank you for reaching out! I've reviewed your registration issue.<br><br>
+                                    The system holds a temporary hold on new prerequisites for 2-3 days after semester end. Since you completed ENGR 201 last semester with an A grade, your transcript data needs to sync with the registration system.<br><br>
+                                    <strong>Solution:</strong> Please try registering again tomorrow (February 5th). If the hold persists, contact the Registrar's Office at registrar@university.edu and reference your REQ-2025-001 request.<br><br>
+                                    If you have additional questions, feel free to reply to this email.<br><br>
+                                    Best regards,<br>
+                                    Dr. Sarah Chen<br>
+                                    Engineering Academic Advising<br>
+                                    Faculty of Engineering
+                                </div>
+                                <div style="font-size: 11px; color: var(--grey); margin-top: 8px;">
+                                    <span class="ai-assisted-badge">AI-Assisted</span> <span style="margin-left: 8px;">This response was generated with AI assistance and reviewed by faculty staff before sending.</span>
+                                </div>
+                            </div>
+
+                            <!-- Satisfaction Rating -->
+                            <div class="satisfaction-section">
+                                <div class="satisfaction-label">How satisfied are you with this response?</div>
+                                <div class="star-rating" id="rating-1">
+                                    <span class="star empty" onclick="setRating(1, 1)">★</span>
+                                    <span class="star empty" onclick="setRating(1, 2)">★</span>
+                                    <span class="star empty" onclick="setRating(1, 3)">★</span>
+                                    <span class="star empty" onclick="setRating(1, 4)">★</span>
+                                    <span class="star empty" onclick="setRating(1, 5)">★</span>
+                                </div>
+                                <textarea class="feedback-textarea" id="feedback-1" placeholder="(Optional) Tell us how we can improve..."></textarea>
+                                <button class="submit-feedback-btn" onclick="submitFeedback(1)">Submit Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email 2: Human Response (Complex Case) -->
+                    <div class="email-card">
+                        <div class="email-header">
+                            <div class="email-title">Your Request Has Been Reviewed</div>
+                            <div class="email-id">Request ID: REQ-2025-002 | Status: ✓ Resolved</div>
+                        </div>
+                        <div class="email-body">
+                            <div class="status-indicator" style="background-color: #D1ECF1; border-left-color: #0C5460; color: #0C5460;">
+                                ✓ Your request required manual review and has been handled by our staff.
+                            </div>
+
+                            <h3 style="margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--dark-grey);">STUDENT'S ORIGINAL INQUIRY</h3>
+                            <div class="message-content">
+                                Subject: Program Change Request - Computer Engineering to Software Engineering<br><br>
+                                Hi,<br><br>
+                                I'm currently in the Computer Engineering program (Year 2) and I've been thinking about switching to Software Engineering. I'm concerned about how this will affect my graduation timeline and transcript. Can I still graduate on time? What courses would I need to retake?<br><br>
+                                Thanks,<br>
+                                Jordan Martinez<br>
+                                Student ID: 001234568
+                            </div>
+
+                            <div class="response-section">
+                                <div class="response-label">RESPONSE FROM FACULTY ADVISOR</div>
+                                <div class="response-text">
+                                    Dear Jordan,<br><br>
+                                    Thank you for reaching out about your program change request. This is a great question and we're happy to help you navigate this transition.<br><br>
+                                    <strong>Program Change Overview:</strong><br>
+                                    Good news! Switching from Computer Engineering to Software Engineering is very feasible given your current progress. While there are some differing courses in Years 3-4, many of your Year 1-2 courses will transfer as general engineering credits.<br><br>
+                                    <strong>Timeline Impact:</strong> You should still be able to graduate on time (Spring 2027) with careful course planning. We recommend retaking: SOFT 301 (Software Design), SOFT 310 (Databases), and SOFT 401 (Advanced Algorithms).<br><br>
+                                    <strong>Next Steps:</strong> I'd like to meet with you to:<br>
+                                    • Review your completed courses and transcripts<br>
+                                    • Create a customized course plan for Years 3-4<br>
+                                    • Ensure all requirements are met<br><br>
+                                    Please book a 30-minute advising appointment at: advising.university.edu/bookings<br>
+                                    I have availability on Feb 7th, 10th, and 12th.<br><br>
+                                    Looking forward to helping you succeed!<br><br>
+                                    Best regards,<br>
+                                    Prof. Michael Rodriguez<br>
+                                    Academic Advisor, Faculty of Engineering
+                                </div>
+                                <div style="font-size: 11px; color: var(--grey); margin-top: 8px;">
+                                    <span style="background-color: #E7E7E7; color: #333; padding: 2px 6px; border-radius: 3px; font-weight: 600; text-transform: uppercase;">Manual Review</span> <span style="margin-left: 8px;">This response required manual review by faculty staff due to complexity.</span>
+                                </div>
+                            </div>
+
+                            <!-- Satisfaction Rating -->
+                            <div class="satisfaction-section">
+                                <div class="satisfaction-label">How satisfied are you with this response?</div>
+                                <div class="star-rating" id="rating-2">
+                                    <span class="star empty" onclick="setRating(2, 1)">★</span>
+                                    <span class="star empty" onclick="setRating(2, 2)">★</span>
+                                    <span class="star empty" onclick="setRating(2, 3)">★</span>
+                                    <span class="star empty" onclick="setRating(2, 4)">★</span>
+                                    <span class="star empty" onclick="setRating(2, 5)">★</span>
+                                </div>
+                                <textarea class="feedback-textarea" id="feedback-2" placeholder="(Optional) Tell us how we can improve..."></textarea>
+                                <button class="submit-feedback-btn" onclick="submitFeedback(2)">Submit Feedback</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email 3: In Progress -->
+                    <div class="email-card">
+                        <div class="email-header">
+                            <div class="email-title">Your Request Is Being Processed</div>
+                            <div class="email-id">Request ID: REQ-2025-003 | Status: ⏳ In Progress</div>
+                        </div>
+                        <div class="email-body">
+                            <div class="status-indicator" style="background-color: #FFF3CD; border-left-color: #856404; color: #856404;">
+                                ⏳ Your request is being reviewed. We'll send you a response within 24 hours.
+                            </div>
+
+                            <h3 style="margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--dark-grey);">STUDENT'S ORIGINAL INQUIRY</h3>
+                            <div class="message-content">
+                                Subject: Late Drop Request - ENGR 250<br><br>
+                                Hi,<br><br>
+                                I'd like to request a late drop for ENGR 250. I have a medical reason for this request and I have documentation from Student Health Services. The normal drop deadline has passed but I believe this qualifies for a late drop exception.<br><br>
+                                Attached: Medical Certificate<br><br>
+                                Thanks,<br>
+                                Casey Kim<br>
+                                Student ID: 001234569
+                            </div>
+
+                            <div class="response-section" style="opacity: 0.7;">
+                                <div class="response-label">STATUS</div>
+                                <p style="font-size: 13px; color: var(--grey); line-height: 1.6;">
+                                    Your request has been received and we've reviewed your medical documentation. This is being escalated to the Dean of Student Affairs for a final decision on the late drop exception.<br><br>
+                                    We typically provide a response within 24-48 hours. You'll receive an email with the decision and next steps.<br><br>
+                                    <strong>In the meantime:</strong> Please continue attending class unless you receive approval for the late drop.
+                                </p>
+                            </div>
+
+                            <!-- No satisfaction rating yet - request in progress -->
+                            <div style="background-color: #F0F0F0; padding: 12px; border-radius: 4px; margin-top: 20px; text-align: center; font-size: 12px; color: var(--grey);">
+                                Once we send you a response, you'll be able to rate your satisfaction with the service.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setRating(emailId, rating) {
+            const ratingContainer = document.getElementById(`rating-${emailId}`);
+            const stars = ratingContainer.querySelectorAll('.star');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('empty');
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                    star.classList.add('empty');
+                }
+            });
+        }
+
+        function submitFeedback(emailId) {
+            const ratingContainer = document.getElementById(`rating-${emailId}`);
+            const selectedStars = ratingContainer.querySelectorAll('.star:not(.empty)').length;
+            const feedbackText = document.getElementById(`feedback-${emailId}`).value;
+            const button = event.target;
+
+            if (selectedStars === 0) {
+                alert('Please select a star rating before submitting');
+                return;
+            }
+
+            const feedback = {
+                requestId: `REQ-2025-00${emailId}`,
+                rating: selectedStars,
+                comment: feedbackText,
+                timestamp: new Date().toLocaleString()
+            };
+
+            console.log('Feedback submitted:', feedback);
+
+            const section = button.closest('.satisfaction-section');
+            section.innerHTML = `
+                <div class="feedback-submitted">
+                    ✓ Thank you! Your feedback has been recorded. This helps us improve our service.
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

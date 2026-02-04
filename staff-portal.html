@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFBA - Staff Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">SAFBA</div>
+        <div class="header-info">
+            <span>Staff Email Management System</span>
+            <div class="user-badge">👤 Staff Member</div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="nav-item"><a href="index.html" style="color: inherit; text-decoration: none; display: block;">🏠 Home</a></div>
+            <div class="nav-item active">📊 Staff Portal</div>
+            <div class="nav-item"><a href="email-examples.html" style="color: inherit; text-decoration: none; display: block;">📧 Examples</a></div>
+            <div style="border-top: 1px solid var(--light-grey); margin: 10px 0;"></div>
+            <div class="nav-item"><a href="analytics.html" style="color: inherit; text-decoration: none; display: block;">📈 Analytics</a></div>
+            <div class="nav-item" style="opacity: 0.6;">🔄 Flow Demo</div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard View -->
+            <div class="view-section active" style="display: flex !important; flex-direction: column;">
+                <div class="dashboard-header">
+                    <h1>Inbox</h1>
+                    <p>Manage incoming student requests with AI assistance</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-panel">
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label>Status</label>
+                            <select id="filter-status">
+                                <option value="">All Statuses</option>
+                                <option value="new">New</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="replied">Replied</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Priority</label>
+                            <select id="filter-priority">
+                                <option value="">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Category</label>
+                            <select id="filter-category">
+                                <option value="">All Categories</option>
+                                <option value="academic">Academic (All)</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Sort By</label>
+                            <select id="sort-by">
+                                <option value="recent">Most Recent</option>
+                                <option value="priority">Highest Priority</option>
+                            </select>
+                        </div>
+                        <div class="button-group">
+                            <button class="btn-secondary btn-small" onclick="resetFilters()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request List -->
+                <div class="request-list" id="request-list">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Detail View (Hidden by default) -->
+            <div id="detail-view" class="view-section" style="display: none;">
+                <div class="detail-view-content">
+                    <div class="detail-main">
+                        <div class="detail-back">
+                            <button class="back-btn" onclick="backToDashboard()">← Back to Inbox</button>
+                        </div>
+                        <div class="detail-header" id="detail-header">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                        <div class="detail-section">
+                            <h3>Student Message</h3>
+                            <div class="message-content" id="detail-message">
+                                <!-- Populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Suggestions Panel -->
+                    <div class="ai-suggestions" id="ai-panel">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Satisfaction Rating System
+        function setRating(emailId, rating) {
+            const ratingContainer = document.getElementById(`rating-${emailId}`);
+            const stars = ratingContainer.querySelectorAll('.star');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('empty');
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                    star.classList.add('empty');
+                }
+            });
+        }
+
+        function submitFeedback(emailId) {
+            const ratingContainer = document.getElementById(`rating-${emailId}`);
+            const selectedStars = ratingContainer.querySelectorAll('.star:not(.empty)').length;
+            const feedbackText = document.getElementById(`feedback-${emailId}`).value;
+            const button = event.target;
+
+            if (selectedStars === 0) {
+                alert('Please select a star rating before submitting');
+                return;
+            }
+
+            const feedback = {
+                requestId: `REQ-2025-00${emailId}`,
+                rating: selectedStars,
+                comment: feedbackText,
+                timestamp: new Date().toLocaleString()
+            };
+
+            console.log('Feedback submitted:', feedback);
+
+            const section = button.closest('.satisfaction-section');
+            section.innerHTML = `
+                <div class="feedback-submitted">
+                    ✓ Thank you! Your feedback has been recorded. This helps us improve our service.
+                </div>
+            `;
+        }
+
+        // Mock Data
+        const mockRequests = [
+            {
+                id: 1,
+                student: "Alex Johnson",
+                email: "alex.johnson@student.edu",
+                receivedTime: "2 hours ago",
+                message: "Hi,\n\nI'm trying to plan my course sequence for next semester. I'm in my second year of Mechanical Engineering and I'm unsure which courses to take after completing MECH 2314 (Dynamics). Should I take Thermodynamics or Fluid Mechanics first? What's the recommended order?\n\nThanks,\nAlex Johnson",
+                status: "new",
+                priority: "high",
+                category: "academic",
+                aiCategory: "Course Sequencing",
+                aiPriority: "High",
+                aiConfidence: "high",
+                suggestedResponse: "For Mechanical Engineering, we recommend taking Thermodynamics (MECH 3320) before Fluid Mechanics (MECH 3410) as it provides foundational concepts. However, both can be taken concurrently if needed. Please consult your academic advisor for personalized guidance."
+            },
+            {
+                id: 2,
+                student: "Jordan Martinez",
+                email: "jordan.martinez@student.edu",
+                receivedTime: "4 hours ago",
+                message: "Hello,\n\nI received a C- in ENGR 2150 (Programming) last semester and I'm concerned about my GPA. The course is a prerequisite for my major requirements. Do I need to retake it? What are my options?\n\nThanks,\nJordan Martinez",
+                status: "in-progress",
+                priority: "high",
+                category: "academic",
+                aiCategory: "Grade Appeal & Retake Options",
+                aiPriority: "High",
+                aiConfidence: "high",
+                suggestedResponse: "A grade of C- meets the minimum requirement for prerequisite courses. However, you may retake it for grade replacement if you wish to improve your GPA. Check your degree audit to confirm all prerequisite requirements are satisfied. Contact your academic advisor for individual guidance."
+            },
+            {
+                id: 3,
+                student: "Sam Chen",
+                email: "sam.chen@student.edu",
+                receivedTime: "6 hours ago",
+                message: "Hi,\n\nI have a conflict with my midterm exam schedule. CHEM 2210 and PHYS 2120 are scheduled at the same time on March 15th. How can I arrange a deferred exam? What's the process?\n\nThanks,\nSam",
+                status: "new",
+                priority: "high",
+                category: "academic",
+                aiCategory: "Deferred Exam Request",
+                aiPriority: "High",
+                aiConfidence: "medium",
+                suggestedResponse: "You can request a deferred exam for exam conflicts. Submit a Deferred Exam Request form (available on the Registrar's website) at least 2 weeks before the exam date. Include documentation of the conflict. We'll work with both departments to schedule an alternative date."
+            },
+            {
+                id: 4,
+                student: "Taylor Rodriguez",
+                email: "taylor.rodriguez@student.edu",
+                receivedTime: "8 hours ago",
+                message: "Hello,\n\nI'm an Electronics Engineering student and I'd like to know if I can drop ELEC 3115 (Microprocessors) after the add/drop deadline. I'm currently enrolled but realizing it's too challenging alongside my other courses. What are my options?\n\nThanks",
+                status: "new",
+                priority: "medium",
+                category: "academic",
+                aiCategory: "Course Withdrawal Request",
+                aiPriority: "Medium",
+                aiConfidence: "medium",
+                suggestedResponse: "Late drops require department approval. Submit a Late Course Withdrawal Request to the Engineering Advising Office with a brief explanation. The deadline for late drops is April 10th. We recommend meeting with your advisor to discuss alternatives like tutoring support first."
+            },
+            {
+                id: 5,
+                student: "Casey Kim",
+                email: "casey.kim@student.edu",
+                receivedTime: "12 hours ago",
+                message: "Hi,\n\nI'm in Civil Engineering and I need to transfer credits from my prior institution. I completed courses equivalent to ENGR 1100 (Introduction to Engineering) and MATH 1410 (Calculus I). How do I get these evaluated for transfer credit?\n\nCasey",
+                status: "replied",
+                priority: "high",
+                category: "academic",
+                aiCategory: "Transfer Credit Evaluation",
+                aiPriority: "High",
+                aiConfidence: "high",
+                suggestedResponse: "Submit an Official Course Transcript to the Registrar along with course descriptions and syllabi. Our Admissions office will evaluate them for equivalency. This process typically takes 2-3 weeks. You can submit documents via email to registrar@university.edu."
+            },
+            {
+                id: 6,
+                student: "Morgan Lee",
+                email: "morgan.lee@student.edu",
+                receivedTime: "1 day ago",
+                message: "Hi,\n\nI'm a 3rd year Software Engineering student and I'd like to register for an independent project (ENGR 4900). Can you confirm that I meet the prerequisites and explain the enrollment process?\n\nThanks",
+                status: "replied",
+                priority: "low",
+                category: "academic",
+                aiCategory: "Independent Project Registration",
+                aiPriority: "Low",
+                aiConfidence: "high",
+                suggestedResponse: "ENGR 4900 requires 90+ credits completed and approval from a faculty supervisor. Email the Department Chair with your proposed project topic and preferred supervisor. Once approved, you'll receive a registration code. The deadline to add independent projects is February 15th."
+            }
+        ];
+
+        let currentSelectedId = null;
+
+        function init() {
+            renderRequestList(mockRequests);
+            setupEventListeners();
+        }
+
+        function renderRequestList(requests = mockRequests) {
+            const listContainer = document.getElementById('request-list');
+            listContainer.innerHTML = '';
+
+            if (requests.length === 0) {
+                listContainer.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No requests found</div></div>';
+                return;
+            }
+
+            requests.forEach(request => {
+                const item = document.createElement('div');
+                item.className = 'request-item';
+                if (currentSelectedId === request.id) item.classList.add('selected');
+                item.onclick = () => selectRequest(request.id);
+
+                item.innerHTML = `
+                    <div class="request-content">
+                        <div class="request-header">
+                            <span class="request-student">${request.student}</span>
+                            <span class="request-status status-${request.status}">${request.status.replace('-', ' ')}</span>
+                        </div>
+                        <div class="request-preview">${request.message.substring(0, 100)}...</div>
+                        <div class="request-meta">
+                            <div class="meta-item">📧 ${request.email}</div>
+                            <div class="meta-item">⏱️ ${request.receivedTime}</div>
+                            <div class="meta-item">📁 ${request.category}</div>
+                            <div class="meta-item"><span class="ai-confidence confidence-${request.aiConfidence}">AI: ${request.aiConfidence}</span></div>
+                        </div>
+                    </div>
+                `;
+
+                listContainer.appendChild(item);
+            });
+        }
+
+        function selectRequest(id) {
+            currentSelectedId = id;
+            const request = mockRequests.find(r => r.id === id);
+
+            const headerDiv = document.getElementById('detail-header');
+            headerDiv.innerHTML = `
+                <h2>${request.student}</h2>
+                <div class="detail-meta">
+                    <span>📧 ${request.email}</span>
+                    <span>⏱️ Received ${request.receivedTime}</span>
+                    <span>Status: <strong>${request.status.replace('-', ' ')}</strong></span>
+                </div>
+            `;
+
+            document.getElementById('detail-message').textContent = request.message;
+
+            const aiPanel = document.getElementById('ai-panel');
+            aiPanel.innerHTML = `
+                <div class="ai-header">
+                    <div class="ai-icon">AI</div>
+                    AI Suggestions
+                </div>
+
+                <div class="ai-disclaimer">
+                    ⚠️ AI suggestions are for reference only. Please review and edit as needed before sending.
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="suggestion-label">Suggested Category</div>
+                    <div class="suggestion-value">${request.aiCategory}</div>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="suggestion-label">Suggested Priority</div>
+                    <div class="suggestion-value">${request.aiPriority}</div>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="suggestion-label">Confidence Level</div>
+                    <div class="suggestion-value"><span class="ai-confidence confidence-${request.aiConfidence}">●${request.aiConfidence.toUpperCase()}</span></div>
+                </div>
+
+                <div class="suggestion-item">
+                    <div class="suggestion-label">Suggested Response</div>
+                    <div class="suggestion-value" style="font-size: 13px; line-height: 1.5;">"${request.suggestedResponse}"</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-accept" onclick="acceptSuggestion(${id})">✓ Accept & Send</button>
+                    <button class="btn-edit" onclick="editResponse(${id})">✏️ Edit Before Sending</button>
+                    <button class="btn-ignore" onclick="ignoreSuggestion(${id})">✕ Ignore Suggestion</button>
+                </div>
+
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--light-grey);">
+                    <button style="width: 100%; background-color: var(--light-grey); color: var(--black); border: 1px solid var(--grey); padding: 10px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500;" onclick="escalateRequest(${id})">⬆️ Escalate Request</button>
+                </div>
+            `;
+
+            document.getElementById('request-list').parentElement.style.display = 'none';
+            document.getElementById('detail-view').style.display = 'flex';
+            renderRequestList(getCurrentFilteredRequests());
+        }
+
+        function backToDashboard() {
+            currentSelectedId = null;
+            document.getElementById('request-list').parentElement.style.display = 'block';
+            document.getElementById('detail-view').style.display = 'none';
+            renderRequestList(getCurrentFilteredRequests());
+        }
+
+        function getCurrentFilteredRequests() {
+            const status = document.getElementById('filter-status').value;
+            const priority = document.getElementById('filter-priority').value;
+            const category = document.getElementById('filter-category').value;
+            const sortBy = document.getElementById('sort-by').value;
+
+            let filtered = mockRequests.filter(r => {
+                return (!status || r.status === status) &&
+                       (!priority || r.priority.toLowerCase() === priority) &&
+                       (!category || r.category === category);
+            });
+
+            if (sortBy === 'priority') {
+                const priorityOrder = { 'high': 0, 'medium': 1, 'low': 2 };
+                filtered.sort((a, b) => priorityOrder[a.priority.toLowerCase()] - priorityOrder[b.priority.toLowerCase()]);
+            }
+
+            return filtered;
+        }
+
+        function applyFilters() {
+            renderRequestList(getCurrentFilteredRequests());
+        }
+
+        function resetFilters() {
+            document.getElementById('filter-status').value = '';
+            document.getElementById('filter-priority').value = '';
+            document.getElementById('filter-category').value = '';
+            document.getElementById('sort-by').value = 'recent';
+            renderRequestList(mockRequests);
+        }
+
+        function acceptSuggestion(id) {
+            const request = mockRequests.find(r => r.id === id);
+            request.status = 'replied';
+            alert(`✓ Response sent to ${request.student}!\n\nThe AI-suggested response has been sent.`);
+            backToDashboard();
+        }
+
+        function editResponse(id) {
+            const request = mockRequests.find(r => r.id === id);
+            const response = prompt('Edit the response before sending:', request.suggestedResponse);
+            if (response !== null) {
+                request.suggestedResponse = response;
+                request.status = 'replied';
+                alert(`✓ Edited response sent to ${request.student}!`);
+                backToDashboard();
+            }
+        }
+
+        function ignoreSuggestion(id) {
+            const request = mockRequests.find(r => r.id === id);
+            request.status = 'in-progress';
+            alert(`Response suggestion ignored for ${request.student}. You can draft your own response.`);
+            backToDashboard();
+        }
+
+        function escalateRequest(id) {
+            const request = mockRequests.find(r => r.id === id);
+            alert(`Request from ${request.student} has been escalated to a manager for priority handling.`);
+        }
+
+        function setupEventListeners() {
+            document.getElementById('filter-status').addEventListener('change', applyFilters);
+            document.getElementById('filter-priority').addEventListener('change', applyFilters);
+            document.getElementById('filter-category').addEventListener('change', applyFilters);
+            document.getElementById('sort-by').addEventListener('change', applyFilters);
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
